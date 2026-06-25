@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页运营 - 一城活动后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f5f5; }
+    .ant-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 15px; font-size: 14px; border-radius: 6px; cursor: pointer; border: 1px solid #d9d9d9; background: white; color: rgba(0,0,0,0.88); transition: all 0.2s; text-decoration: none; }
+    .ant-btn:hover { border-color: #4096ff; color: #4096ff; }
+    .ant-btn-primary { background: #1677ff; border-color: #1677ff; color: white; }
+    .ant-btn-sm { height: 24px; padding: 0 7px; font-size: 14px; }
+    .ant-btn-link { border: none; background: none; color: #1677ff; padding: 0 4px; }
+    .ant-tag { display: inline-block; padding: 0 7px; font-size: 12px; line-height: 20px; border-radius: 4px; border: 1px solid; }
+    .tag-blue { color: #1677ff; background: #e6f4ff; border-color: #91caff; }
+    .tag-green { color: #52c41a; background: #f6ffed; border-color: #b7eb8f; }
+    .tag-orange { color: #fa8c16; background: #fff7e6; border-color: #ffd591; }
+    .tag-gray { color: #595959; background: #fafafa; border-color: #d9d9d9; }
+    .ant-card { background: white; border-radius: 8px; border: 1px solid #f0f0f0; margin-bottom: 24px; }
+    .ant-card-head { padding: 0 24px; min-height: 56px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+    .ant-card-head-title { font-size: 16px; font-weight: 600; color: rgba(0,0,0,0.88); }
+    .ant-card-body { padding: 24px; }
+    .ant-table { background: white; border-radius: 8px; overflow: hidden; }
+    .ant-table table { width: 100%; border-collapse: collapse; text-align: left; }
+    .ant-table th { background: #fafafa; padding: 12px 16px; font-weight: 500; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+    .ant-table td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; }
+    .action-links { display: flex; gap: 8px; }
+    .banner-item { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+    .banner-item:last-child { border-bottom: none; }
+    .banner-img { width: 120px; height: 64px; border-radius: 4px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); flex-shrink: 0; }
+    .banner-info { flex: 1; }
+    .banner-title { font-weight: 500; margin-bottom: 4px; }
+    .banner-meta { font-size: 12px; color: #8c8c8c; }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen">
+    <aside class="w-60 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="h-16 flex items-center px-5 border-b border-gray-200">
+        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">城</div>
+        <span class="text-lg font-semibold text-gray-800">一城活动后台</span>
+      </div>
+      <nav class="py-3">
+        <a href="dashboard.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📊</span><span>仪表盘</span></a>
+        <a href="activities.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🎫</span><span>活动管理</span></a>
+        <a href="operations.html" class="flex items-center px-5 py-2.5 text-sm bg-blue-50 text-blue-600 border-r-2 border-blue-600"><span class="mr-3">🏠</span><span>首页运营</span></a>
+        <a href="orders.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📦</span><span>订单管理</span></a>
+        <a href="users.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">👥</span><span>用户管理</span></a>
+        <a href="participants.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📋</span><span>参与人管理</span></a>
+        <a href="content.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📝</span><span>内容管理</span></a>
+        <a href="settings.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">⚙️</span><span>系统设置</span></a>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col">
+      <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+        <div class="text-base font-medium text-gray-800">首页运营</div>
+        <div class="flex items-center gap-4"><span class="text-sm text-gray-500">管理员</span><div class="avatar">管</div></div>
+      </header>
+      <main class="flex-1 p-6 overflow-auto">
+        <div class="ant-card">
+          <div class="ant-card-head">
+            <span class="ant-card-head-title">首页 Banner</span>
+            <button class="ant-btn ant-btn-primary ant-btn-sm">+ 添加 Banner</button>
+          </div>
+          <div class="ant-card-body">
+            <div class="banner-item">
+              <div class="banner-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+              <div class="banner-info">
+                <div class="banner-title">城市音乐节 2026</div>
+                <div class="banner-meta">排序：1 · 状态：<span class="ant-tag tag-green">启用</span></div>
+              </div>
+              <div class="action-links">
+                <button class="ant-btn ant-btn-link ant-btn-sm">编辑</button>
+                <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">删除</button>
+              </div>
+            </div>
+            <div class="banner-item">
+              <div class="banner-img" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+              <div class="banner-info">
+                <div class="banner-title">当代艺术大展</div>
+                <div class="banner-meta">排序：2 · 状态：<span class="ant-tag tag-green">启用</span></div>
+              </div>
+              <div class="action-links">
+                <button class="ant-btn ant-btn-link ant-btn-sm">编辑</button>
+                <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">删除</button>
+              </div>
+            </div>
+            <div class="banner-item">
+              <div class="banner-img" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+              <div class="banner-info">
+                <div class="banner-title">亲子互动科学秀</div>
+                <div class="banner-meta">排序：3 · 状态：<span class="ant-tag tag-gray">禁用</span></div>
+              </div>
+              <div class="action-links">
+                <button class="ant-btn ant-btn-link ant-btn-sm">编辑</button>
+                <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">删除</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ant-card">
+          <div class="ant-card-head">
+            <span class="ant-card-head-title">热门活动推荐</span>
+            <button class="ant-btn ant-btn-primary ant-btn-sm">+ 添加活动</button>
+          </div>
+          <div class="ant-card-body">
+            <div class="ant-table">
+              <table>
+                <thead><tr><th>排序</th><th>活动名称</th><th>分类</th><th>状态</th><th style="width: 200px;">操作</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>城市音乐节 2026</td><td><span class="ant-tag tag-pink" style="color:#eb2f96;background:#fff0f6;border-color:#ffadd2;">音乐</span></td><td><span class="ant-tag tag-green">已上架</span></td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm">上移</button><button class="ant-btn ant-btn-link ant-btn-sm">下移</button><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">移除</button></div></td></tr>
+                  <tr><td>2</td><td>当代艺术大展</td><td><span class="ant-tag tag-blue">展览</span></td><td><span class="ant-tag tag-green">已上架</span></td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm">上移</button><button class="ant-btn ant-btn-link ant-btn-sm">下移</button><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">移除</button></div></td></tr>
+                  <tr><td>3</td><td>城市马拉松挑战赛</td><td><span class="ant-tag tag-red">赛事</span></td><td><span class="ant-tag tag-green">已上架</span></td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm">上移</button><button class="ant-btn ant-btn-link ant-btn-sm">下移</button><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">移除</button></div></td></tr>
+                  <tr><td>4</td><td>亲子互动科学秀</td><td><span class="ant-tag tag-orange">亲子</span></td><td><span class="ant-tag tag-gray">已下架</span></td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm">上移</button><button class="ant-btn ant-btn-link ant-btn-sm">下移</button><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">移除</button></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="ant-card">
+          <div class="ant-card-head"><span class="ant-card-head-title">公告管理</span></div>
+          <div class="ant-card-body">
+            <div class="banner-item">
+              <div class="banner-info">
+                <div class="banner-title">【重要】关于平台系统升级的通知</div>
+                <div class="banner-meta">发布时间：2026-06-20 10:00 · 状态：<span class="ant-tag tag-green">已发布</span></div>
+              </div>
+              <div class="action-links">
+                <button class="ant-btn ant-btn-link ant-btn-sm">编辑</button>
+                <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">删除</button>
+              </div>
+            </div>
+            <div class="banner-item">
+              <div class="banner-info">
+                <div class="banner-title">五一假期活动推荐</div>
+                <div class="banner-meta">发布时间：2026-04-28 15:30 · 状态：<span class="ant-tag tag-gray">已下线</span></div>
+              </div>
+              <div class="action-links">
+                <button class="ant-btn ant-btn-link ant-btn-sm">编辑</button>
+                <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">删除</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

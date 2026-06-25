@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系统设置 - 一城活动后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f5f5; }
+    .ant-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 15px; font-size: 14px; border-radius: 6px; cursor: pointer; border: 1px solid #d9d9d9; background: white; color: rgba(0,0,0,0.88); transition: all 0.2s; text-decoration: none; }
+    .ant-btn:hover { border-color: #4096ff; color: #4096ff; }
+    .ant-btn-primary { background: #1677ff; border-color: #1677ff; color: white; }
+    .ant-btn-primary:hover { background: #4096ff; border-color: #4096ff; color: white; }
+    .ant-card { background: white; border-radius: 8px; border: 1px solid #f0f0f0; margin-bottom: 24px; }
+    .ant-card-head { padding: 0 24px; min-height: 56px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; }
+    .ant-card-head-title { font-size: 16px; font-weight: 600; color: rgba(0,0,0,0.88); }
+    .ant-card-body { padding: 24px; }
+    .ant-input { width: 100%; height: 32px; padding: 4px 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; }
+    .ant-input:focus { border-color: #4096ff; box-shadow: 0 0 0 2px rgba(5,145,255,0.1); outline: none; }
+    .ant-switch { position: relative; width: 44px; height: 22px; background: #1677ff; border-radius: 11px; cursor: pointer; display: inline-block; }
+    .ant-switch::after { content: ''; position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: white; border-radius: 50%; }
+    .ant-switch.off { background: #bfbfbf; }
+    .ant-switch.off::after { left: 2px; right: auto; }
+    .form-item { margin-bottom: 20px; display: flex; align-items: center; gap: 16px; }
+    .form-item label { width: 120px; text-align: right; font-size: 14px; color: rgba(0,0,0,0.88); flex-shrink: 0; }
+    .form-item .form-control { flex: 1; max-width: 400px; }
+    .form-item .hint { font-size: 12px; color: #8c8c8c; margin-top: 4px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; }
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid #f0f0f0; margin-bottom: 24px; }
+    .tab-item { padding: 10px 20px; cursor: pointer; font-size: 14px; color: rgba(0,0,0,0.65); border-bottom: 2px solid transparent; }
+    .tab-item.active { color: #1677ff; border-bottom-color: #1677ff; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen">
+    <aside class="w-60 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="h-16 flex items-center px-5 border-b border-gray-200">
+        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">城</div>
+        <span class="text-lg font-semibold text-gray-800">一城活动后台</span>
+      </div>
+      <nav class="py-3">
+        <a href="dashboard.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📊</span><span>仪表盘</span></a>
+        <a href="activities.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🎫</span><span>活动管理</span></a>
+        <a href="operations.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🏠</span><span>首页运营</span></a>
+        <a href="orders.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📦</span><span>订单管理</span></a>
+        <a href="users.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">👥</span><span>用户管理</span></a>
+        <a href="participants.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📋</span><span>参与人管理</span></a>
+        <a href="content.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📝</span><span>内容管理</span></a>
+        <a href="settings.html" class="flex items-center px-5 py-2.5 text-sm bg-blue-50 text-blue-600 border-r-2 border-blue-600"><span class="mr-3">⚙️</span><span>系统设置</span></a>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col">
+      <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+        <div class="text-base font-medium text-gray-800">系统设置</div>
+        <div class="flex items-center gap-4"><span class="text-sm text-gray-500">管理员</span><div class="avatar">管</div></div>
+      </header>
+      <main class="flex-1 p-6 overflow-auto">
+        <div class="ant-card">
+          <div class="ant-card-body">
+            <div class="tabs">
+              <div class="tab-item active">基础设置</div>
+              <div class="tab-item">支付设置</div>
+              <div class="tab-item">短信设置</div>
+              <div class="tab-item">管理员管理</div>
+            </div>
+            <div class="form-item">
+              <label>小程序名称</label>
+              <div class="form-control"><input class="ant-input" value="一城活动" /></div>
+            </div>
+            <div class="form-item">
+              <label>客服电话</label>
+              <div class="form-control"><input class="ant-input" value="400-888-8888" /></div>
+            </div>
+            <div class="form-item">
+              <label>客服工作时间</label>
+              <div class="form-control"><input class="ant-input" value="周一至周日 9:00-21:00" /></div>
+            </div>
+            <div class="form-item">
+              <label>自动退款</label>
+              <div class="form-control">
+                <div class="ant-switch"></div>
+                <div class="hint">开启后，用户申请退款将自动通过</div>
+              </div>
+            </div>
+            <div class="form-item">
+              <label>活动审核</label>
+              <div class="form-control">
+                <div class="ant-switch off"></div>
+                <div class="hint">开启后，发布活动需审核通过后才能上架</div>
+              </div>
+            </div>
+            <div class="form-item">
+              <label>注册送积分</label>
+              <div class="form-control">
+                <div class="ant-switch"></div>
+                <div class="hint">新用户注册即赠送积分</div>
+              </div>
+            </div>
+            <div style="margin-left: 136px; margin-top: 32px;">
+              <button class="ant-btn ant-btn-primary">保存设置</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

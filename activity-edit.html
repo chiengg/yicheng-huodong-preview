@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编辑活动 - 一城活动后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f5f5; }
+    .ant-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 15px; font-size: 14px; border-radius: 6px; cursor: pointer; border: 1px solid #d9d9d9; background: white; color: rgba(0,0,0,0.88); transition: all 0.2s; text-decoration: none; }
+    .ant-btn:hover { border-color: #4096ff; color: #4096ff; }
+    .ant-btn-primary { background: #1677ff; border-color: #1677ff; color: white; }
+    .ant-btn-primary:hover { background: #4096ff; border-color: #4096ff; color: white; }
+    .ant-card { background: white; border-radius: 8px; border: 1px solid #f0f0f0; margin-bottom: 24px; }
+    .ant-card-head { padding: 0 24px; min-height: 56px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; }
+    .ant-card-head-title { font-size: 16px; font-weight: 600; color: rgba(0,0,0,0.88); }
+    .ant-card-body { padding: 24px; }
+    .ant-input { width: 100%; height: 32px; padding: 4px 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; }
+    .ant-input:focus { border-color: #4096ff; box-shadow: 0 0 0 2px rgba(5,145,255,0.1); outline: none; }
+    textarea.ant-input { height: auto; padding: 8px 11px; resize: vertical; }
+    .ant-select-selector { height: 32px; padding: 0 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; display: flex; align-items: center; cursor: pointer; }
+    .form-item { margin-bottom: 20px; }
+    .form-item label { display: block; margin-bottom: 6px; font-size: 14px; color: rgba(0,0,0,0.88); }
+    .form-item .required::before { content: '*'; color: #ff4d4f; margin-right: 4px; }
+    .form-item .hint { font-size: 12px; color: #8c8c8c; margin-top: 4px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; }
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .upload-cover { width: 240px; height: 135px; border: 1px dashed #d9d9d9; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: #fafafa; cursor: pointer; font-size: 13px; color: #8c8c8c; flex-direction: column; gap: 8px; }
+    .upload-cover:hover { border-color: #4096ff; }
+    .tag-pink { color: #eb2f96; background: #fff0f6; border-color: #ffadd2; }
+    .ant-tag { display: inline-block; padding: 0 7px; font-size: 12px; line-height: 20px; border-radius: 4px; border: 1px solid; }
+    .ticket-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 80px; gap: 12px; margin-bottom: 12px; align-items: center; }
+    .session-row { display: grid; grid-template-columns: 2fr 2fr 1fr 80px; gap: 12px; margin-bottom: 12px; align-items: center; }
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid #f0f0f0; margin-bottom: 24px; }
+    .tab-item { padding: 10px 20px; cursor: pointer; font-size: 14px; color: rgba(0,0,0,0.65); border-bottom: 2px solid transparent; }
+    .tab-item.active { color: #1677ff; border-bottom-color: #1677ff; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen">
+    <aside class="w-60 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="h-16 flex items-center px-5 border-b border-gray-200">
+        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">城</div>
+        <span class="text-lg font-semibold text-gray-800">一城活动后台</span>
+      </div>
+      <nav class="py-3">
+        <a href="dashboard.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📊</span><span>仪表盘</span></a>
+        <a href="activities.html" class="flex items-center px-5 py-2.5 text-sm bg-blue-50 text-blue-600 border-r-2 border-blue-600"><span class="mr-3">🎫</span><span>活动管理</span></a>
+        <a href="operations.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🏠</span><span>首页运营</span></a>
+        <a href="orders.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📦</span><span>订单管理</span></a>
+        <a href="users.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">👥</span><span>用户管理</span></a>
+        <a href="participants.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📋</span><span>参与人管理</span></a>
+        <a href="content.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📝</span><span>内容管理</span></a>
+        <a href="settings.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">⚙️</span><span>系统设置</span></a>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col">
+      <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+        <div class="text-base font-medium text-gray-800">编辑活动</div>
+        <div class="flex items-center gap-4"><span class="text-sm text-gray-500">管理员</span><div class="avatar">管</div></div>
+      </header>
+      <main class="flex-1 p-6 overflow-auto">
+        <div class="page-header">
+          <div class="flex items-center gap-3">
+            <a href="activities.html" class="ant-btn">← 返回列表</a>
+            <h2 class="text-xl font-semibold text-gray-800">编辑活动</h2>
+          </div>
+          <div class="flex gap-2">
+            <button class="ant-btn">取消</button>
+            <button class="ant-btn">保存草稿</button>
+            <button class="ant-btn ant-btn-primary">提交上架</button>
+          </div>
+        </div>
+        <div class="ant-card">
+          <div class="ant-card-body">
+            <div class="tabs">
+              <div class="tab-item active">基础信息</div>
+              <div class="tab-item">场次票档</div>
+              <div class="tab-item">活动详情</div>
+            </div>
+            <div class="form-item">
+              <label class="required">活动封面</label>
+              <div class="upload-cover">
+                <div style="font-size: 24px;">📷</div>
+                <div>点击上传封面</div>
+                <div class="hint">建议尺寸 800x450，支持 jpg/png</div>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="form-item">
+                <label class="required">活动名称</label>
+                <input class="ant-input" value="城市音乐节 2026" />
+              </div>
+              <div class="form-item">
+                <label class="required">活动分类</label>
+                <div class="ant-select-selector"><span class="ant-tag tag-pink">音乐</span></div>
+              </div>
+              <div class="form-item">
+                <label class="required">活动地点</label>
+                <input class="ant-input" value="上海·梅赛德斯奔驰文化中心" />
+              </div>
+              <div class="form-item">
+                <label>主办方</label>
+                <input class="ant-input" value="一城文化" />
+              </div>
+              <div class="form-item">
+                <label class="required">活动开始时间</label>
+                <input class="ant-input" value="2026-07-15 19:30" />
+              </div>
+              <div class="form-item">
+                <label class="required">活动结束时间</label>
+                <input class="ant-input" value="2026-07-15 22:00" />
+              </div>
+            </div>
+            <div class="form-item">
+              <label>活动简介</label>
+              <textarea class="ant-input" rows="3">夏日狂欢，音乐不止。汇聚国内外顶级音乐人，打造一场视听盛宴。</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="ant-card">
+          <div class="ant-card-head" style="justify-content: space-between;">
+            <span class="ant-card-head-title">场次管理</span>
+            <button class="ant-btn ant-btn-sm">+ 添加场次</button>
+          </div>
+          <div class="ant-card-body">
+            <div class="session-row">
+              <input class="ant-input" value="2026-07-15 19:30 场次" />
+              <div class="ant-select-selector">上海·梅赛德斯奔驰文化中心</div>
+              <div class="ant-select-selector" style="color: #52c41a;">售票中</div>
+              <button class="ant-btn ant-btn-sm" style="color: #ff4d4f; border-color: #ffa39e;">删除</button>
+            </div>
+            <div class="session-row">
+              <input class="ant-input" value="2026-07-16 19:30 场次" />
+              <div class="ant-select-selector">上海·梅赛德斯奔驰文化中心</div>
+              <div class="ant-select-selector" style="color: #fa8c16;">未开始</div>
+              <button class="ant-btn ant-btn-sm" style="color: #ff4d4f; border-color: #ffa39e;">删除</button>
+            </div>
+          </div>
+        </div>
+        <div class="ant-card">
+          <div class="ant-card-head" style="justify-content: space-between;">
+            <span class="ant-card-head-title">票档管理</span>
+            <button class="ant-btn ant-btn-sm">+ 添加票档</button>
+          </div>
+          <div class="ant-card-body">
+            <div class="ticket-row">
+              <input class="ant-input" value="早鸟票" />
+              <input class="ant-input" value="168.00" />
+              <input class="ant-input" value="500" />
+              <input class="ant-input" value="2026-06-01 10:00" />
+              <div class="ant-select-selector" style="color: #52c41a;">售卖中</div>
+              <button class="ant-btn ant-btn-sm" style="color: #ff4d4f; border-color: #ffa39e;">删除</button>
+            </div>
+            <div class="ticket-row">
+              <input class="ant-input" value="普通票" />
+              <input class="ant-input" value="268.00" />
+              <input class="ant-input" value="1000" />
+              <input class="ant-input" value="2026-06-15 10:00" />
+              <div class="ant-select-selector" style="color: #fa8c16;">未开始</div>
+              <button class="ant-btn ant-btn-sm" style="color: #ff4d4f; border-color: #ffa39e;">删除</button>
+            </div>
+            <div class="ticket-row">
+              <input class="ant-input" value="VIP票" />
+              <input class="ant-input" value="568.00" />
+              <input class="ant-input" value="200" />
+              <input class="ant-input" value="2026-06-01 10:00" />
+              <div class="ant-select-selector" style="color: #52c41a;">售卖中</div>
+              <button class="ant-btn ant-btn-sm" style="color: #ff4d4f; border-color: #ffa39e;">删除</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户管理 - 一城活动后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f5f5; }
+    .ant-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 15px; font-size: 14px; border-radius: 6px; cursor: pointer; border: 1px solid #d9d9d9; background: white; color: rgba(0,0,0,0.88); transition: all 0.2s; text-decoration: none; }
+    .ant-btn:hover { border-color: #4096ff; color: #4096ff; }
+    .ant-btn-primary { background: #1677ff; border-color: #1677ff; color: white; }
+    .ant-btn-primary:hover { background: #4096ff; border-color: #4096ff; color: white; }
+    .ant-btn-sm { height: 24px; padding: 0 7px; font-size: 14px; }
+    .ant-btn-link { border: none; background: none; color: #1677ff; padding: 0 4px; }
+    .ant-btn-link:hover { color: #4096ff; border: none; background: none; }
+    .ant-tag { display: inline-block; padding: 0 7px; font-size: 12px; line-height: 20px; border-radius: 4px; border: 1px solid; }
+    .tag-blue { color: #1677ff; background: #e6f4ff; border-color: #91caff; }
+    .tag-green { color: #52c41a; background: #f6ffed; border-color: #b7eb8f; }
+    .tag-orange { color: #fa8c16; background: #fff7e6; border-color: #ffd591; }
+    .tag-red { color: #ff4d4f; background: #fff1f0; border-color: #ffa39e; }
+    .tag-gray { color: #595959; background: #fafafa; border-color: #d9d9d9; }
+    .ant-input { width: 100%; height: 32px; padding: 4px 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; transition: all 0.2s; }
+    .ant-input:focus { border-color: #4096ff; box-shadow: 0 0 0 2px rgba(5,145,255,0.1); outline: none; }
+    .ant-select { position: relative; display: inline-block; width: 100%; }
+    .ant-select-selector { height: 32px; padding: 0 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; display: flex; align-items: center; cursor: pointer; }
+    .ant-table { background: white; border-radius: 8px; overflow: hidden; }
+    .ant-table table { width: 100%; border-collapse: collapse; text-align: left; }
+    .ant-table th { background: #fafafa; padding: 12px 16px; font-weight: 500; color: rgba(0,0,0,0.88); font-size: 14px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+    .ant-table td { padding: 12px 16px; font-size: 14px; color: rgba(0,0,0,0.88); border-bottom: 1px solid #f0f0f0; }
+    .ant-table tr:hover td { background: #fafafa; }
+    .filter-bar { background: white; border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    .filter-item { display: flex; flex-direction: column; gap: 6px; min-width: 160px; }
+    .filter-item label { font-size: 13px; color: rgba(0,0,0,0.88); }
+    .pagination { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 16px; }
+    .pagination button { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; cursor: pointer; font-size: 14px; }
+    .pagination button.active { border-color: #1677ff; color: #1677ff; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; }
+    .action-links { display: flex; gap: 8px; }
+    .text-sm { font-size: 13px; }
+    .text-gray-500 { color: #8c8c8c; }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen">
+    <aside class="w-60 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="h-16 flex items-center px-5 border-b border-gray-200">
+        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">城</div>
+        <span class="text-lg font-semibold text-gray-800">一城活动后台</span>
+      </div>
+      <nav class="py-3">
+        <a href="dashboard.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📊</span><span>仪表盘</span></a>
+        <a href="activities.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🎫</span><span>活动管理</span></a>
+        <a href="operations.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🏠</span><span>首页运营</span></a>
+        <a href="orders.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📦</span><span>订单管理</span></a>
+        <a href="users.html" class="flex items-center px-5 py-2.5 text-sm bg-blue-50 text-blue-600 border-r-2 border-blue-600"><span class="mr-3">👥</span><span>用户管理</span></a>
+        <a href="participants.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📋</span><span>参与人管理</span></a>
+        <a href="content.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📝</span><span>内容管理</span></a>
+        <a href="settings.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">⚙️</span><span>系统设置</span></a>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col">
+      <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+        <div class="text-base font-medium text-gray-800">用户管理</div>
+        <div class="flex items-center gap-4"><span class="text-sm text-gray-500">管理员</span><div class="avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">管</div></div>
+      </header>
+      <main class="flex-1 p-6 overflow-auto">
+        <div class="filter-bar">
+          <div class="filter-item" style="min-width: 240px;"><label>搜索</label><input class="ant-input" placeholder="请输入昵称/手机号" /></div>
+          <div style="display: flex; gap: 8px;"><button class="ant-btn">重置</button><button class="ant-btn ant-btn-primary">搜索</button></div>
+        </div>
+        <div class="text-sm text-gray-500 mb-4">共 8 条记录</div>
+        <div class="ant-table">
+          <table>
+            <thead><tr><th>用户头像</th><th>昵称</th><th>手机号</th><th>OpenID</th><th>注册时间</th><th>收藏数</th><th style="width: 120px;">操作</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">张</div></td>
+                <td>张三</td><td>138****0001</td><td class="text-xs text-gray-500">o6k_abcdefgh...</td>
+                <td>2026-06-01 10:00</td><td>12</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">李</div></td>
+                <td>李四</td><td>138****0002</td><td class="text-xs text-gray-500">o6k_bcdefghi...</td>
+                <td>2026-06-03 14:20</td><td>8</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">王</div></td>
+                <td>王五</td><td>138****0003</td><td class="text-xs text-gray-500">o6k_cdefghij...</td>
+                <td>2026-06-10 09:15</td><td>5</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">赵</div></td>
+                <td>赵六</td><td>138****0004</td><td class="text-xs text-gray-500">o6k_defghijk...</td>
+                <td>2026-06-12 16:30</td><td>3</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">陈</div></td>
+                <td>陈七</td><td>138****0005</td><td class="text-xs text-gray-500">o6k_efghijkl...</td>
+                <td>2026-06-15 11:45</td><td>7</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">周</div></td>
+                <td>周八</td><td>138****0006</td><td class="text-xs text-gray-500">o6k_fghijklm...</td>
+                <td>2026-06-18 08:20</td><td>2</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">吴</div></td>
+                <td>吴九</td><td>138****0007</td><td class="text-xs text-gray-500">o6k_ghijklmn...</td>
+                <td>2026-06-20 19:00</td><td>4</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="avatar" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">郑</div></td>
+                <td>郑十</td><td>138****0008</td><td class="text-xs text-gray-500">o6k_hijklmno...</td>
+                <td>2026-06-22 13:50</td><td>6</td>
+                <td><div class="action-links"><a href="user-orders.html" class="ant-btn ant-btn-link ant-btn-sm">订单</a></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <button disabled>«</button><button class="active">1</button><button disabled>»</button>
+          <span class="text-sm text-gray-500">共 8 条</span>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>参与人管理 - 一城活动后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f5f5; }
+    .ant-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 15px; font-size: 14px; border-radius: 6px; cursor: pointer; border: 1px solid #d9d9d9; background: white; color: rgba(0,0,0,0.88); transition: all 0.2s; text-decoration: none; }
+    .ant-btn:hover { border-color: #4096ff; color: #4096ff; }
+    .ant-btn-sm { height: 24px; padding: 0 7px; font-size: 14px; }
+    .ant-btn-link { border: none; background: none; color: #1677ff; padding: 0 4px; }
+    .ant-tag { display: inline-block; padding: 0 7px; font-size: 12px; line-height: 20px; border-radius: 4px; border: 1px solid; }
+    .tag-blue { color: #1677ff; background: #e6f4ff; border-color: #91caff; }
+    .tag-green { color: #52c41a; background: #f6ffed; border-color: #b7eb8f; }
+    .tag-orange { color: #fa8c16; background: #fff7e6; border-color: #ffd591; }
+    .tag-red { color: #ff4d4f; background: #fff1f0; border-color: #ffa39e; }
+    .tag-gray { color: #595959; background: #fafafa; border-color: #d9d9d9; }
+    .tag-purple { color: #722ed1; background: #f9f0ff; border-color: #d3adf7; }
+    .ant-input { width: 100%; height: 32px; padding: 4px 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; }
+    .ant-select-selector { height: 32px; padding: 0 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; display: flex; align-items: center; cursor: pointer; }
+    .ant-table { background: white; border-radius: 8px; overflow: hidden; }
+    .ant-table table { width: 100%; border-collapse: collapse; text-align: left; }
+    .ant-table th { background: #fafafa; padding: 12px 16px; font-weight: 500; font-size: 14px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+    .ant-table td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+    .filter-bar { background: white; border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    .filter-item { display: flex; flex-direction: column; gap: 6px; min-width: 160px; }
+    .filter-item label { font-size: 13px; }
+    .pagination { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 16px; }
+    .pagination button { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; cursor: pointer; font-size: 14px; }
+    .pagination button.active { border-color: #1677ff; color: #1677ff; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; }
+    .action-links { display: flex; gap: 8px; }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen">
+    <aside class="w-60 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="h-16 flex items-center px-5 border-b border-gray-200">
+        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">城</div>
+        <span class="text-lg font-semibold text-gray-800">一城活动后台</span>
+      </div>
+      <nav class="py-3">
+        <a href="dashboard.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📊</span><span>仪表盘</span></a>
+        <a href="activities.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🎫</span><span>活动管理</span></a>
+        <a href="operations.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🏠</span><span>首页运营</span></a>
+        <a href="orders.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📦</span><span>订单管理</span></a>
+        <a href="users.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">👥</span><span>用户管理</span></a>
+        <a href="participants.html" class="flex items-center px-5 py-2.5 text-sm bg-blue-50 text-blue-600 border-r-2 border-blue-600"><span class="mr-3">📋</span><span>参与人管理</span></a>
+        <a href="content.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📝</span><span>内容管理</span></a>
+        <a href="settings.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">⚙️</span><span>系统设置</span></a>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col">
+      <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+        <div class="text-base font-medium text-gray-800">参与人管理</div>
+        <div class="flex items-center gap-4"><span class="text-sm text-gray-500">管理员</span><div class="avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">管</div></div>
+      </header>
+      <main class="flex-1 p-6 overflow-auto">
+        <div class="filter-bar">
+          <div class="filter-item"><label>实名状态</label><div class="ant-select-selector">全部状态</div></div>
+          <div class="filter-item"><label>风险标记</label><div class="ant-select-selector">全部</div></div>
+          <div class="filter-item" style="min-width: 240px;"><label>搜索</label><input class="ant-input" placeholder="姓名/手机号/证件号" /></div>
+          <div style="display: flex; gap: 8px;"><button class="ant-btn">重置</button><button class="ant-btn" style="background: #1677ff; border-color: #1677ff; color: white;">搜索</button></div>
+        </div>
+        <div class="text-sm text-gray-500 mb-4">共 8 条记录</div>
+        <div class="ant-table">
+          <table>
+            <thead><tr><th>姓名</th><th>手机号</th><th>证件号</th><th>实名状态</th><th>风险标记</th><th>备注</th><th style="width: 180px;">操作</th></tr></thead>
+            <tbody>
+              <tr><td>张三</td><td>138****0001</td><td>310***********1234</td><td><span class="ant-tag tag-green">已实名</span></td><td><span class="ant-tag tag-gray">正常</span></td><td>-</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">加入黑名单</button></div></td></tr>
+              <tr><td>李四</td><td>138****0002</td><td>320***********5678</td><td><span class="ant-tag tag-green">已实名</span></td><td><span class="ant-tag tag-gray">正常</span></td><td>-</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">加入黑名单</button></div></td></tr>
+              <tr><td>王五</td><td>138****0003</td><td>110***********9012</td><td><span class="ant-tag tag-blue">已注册</span></td><td><span class="ant-tag tag-gray">正常</span></td><td class="text-gray-500 text-sm">待实名认证</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">加入黑名单</button></div></td></tr>
+              <tr><td>赵六</td><td>138****0004</td><td>420***********3456</td><td><span class="ant-tag tag-orange">待审核</span></td><td><span class="ant-tag tag-red">证件重复</span></td><td class="text-gray-500 text-sm">证件号与其他用户重复</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">加入黑名单</button></div></td></tr>
+              <tr><td>陈七</td><td>138****0005</td><td>500***********7890</td><td><span class="ant-tag tag-orange">待审核</span></td><td><span class="ant-tag tag-orange">重复报名</span></td><td class="text-gray-500 text-sm">同一活动重复报名</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">加入黑名单</button></div></td></tr>
+              <tr><td>周八</td><td>138****0006</td><td>610***********2345</td><td><span class="ant-tag tag-red">黑名单</span></td><td><span class="ant-tag tag-red">黑名单命中</span></td><td class="text-gray-500 text-sm">历史违规记录，禁止参与</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #52c41a;">移出黑名单</button></div></td></tr>
+              <tr><td>吴九</td><td>138****0007</td><td>330***********6789</td><td><span class="ant-tag tag-green">已实名</span></td><td><span class="ant-tag tag-gray">正常</span></td><td>-</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">加入黑名单</button></div></td></tr>
+              <tr><td>郑十</td><td>138****0008</td><td>340***********0123</td><td><span class="ant-tag tag-green">已实名</span></td><td><span class="ant-tag tag-gray">正常</span></td><td class="text-gray-500 text-sm">VIP用户</td><td><div class="action-links"><button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">加入黑名单</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <button disabled>«</button><button class="active">1</button><button disabled>»</button>
+          <span class="text-sm text-gray-500">共 8 条</span>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
