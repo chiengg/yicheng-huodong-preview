@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>活动管理 - 一城活动后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f5f5; }
+    .ant-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 15px; font-size: 14px; border-radius: 6px; cursor: pointer; border: 1px solid #d9d9d9; background: white; color: rgba(0,0,0,0.88); transition: all 0.2s; text-decoration: none; }
+    .ant-btn:hover { border-color: #4096ff; color: #4096ff; }
+    .ant-btn-primary { background: #1677ff; border-color: #1677ff; color: white; }
+    .ant-btn-primary:hover { background: #4096ff; border-color: #4096ff; color: white; }
+    .ant-btn-sm { height: 24px; padding: 0 7px; font-size: 14px; }
+    .ant-btn-link { border: none; background: none; color: #1677ff; padding: 0 4px; }
+    .ant-btn-link:hover { color: #4096ff; border: none; background: none; }
+    .ant-tag { display: inline-block; padding: 0 7px; font-size: 12px; line-height: 20px; border-radius: 4px; border: 1px solid; }
+    .tag-blue { color: #1677ff; background: #e6f4ff; border-color: #91caff; }
+    .tag-green { color: #52c41a; background: #f6ffed; border-color: #b7eb8f; }
+    .tag-orange { color: #fa8c16; background: #fff7e6; border-color: #ffd591; }
+    .tag-red { color: #ff4d4f; background: #fff1f0; border-color: #ffa39e; }
+    .tag-gray { color: #595959; background: #fafafa; border-color: #d9d9d9; }
+    .tag-purple { color: #722ed1; background: #f9f0ff; border-color: #d3adf7; }
+    .tag-cyan { color: #13c2c2; background: #e6fffb; border-color: #87e8de; }
+    .tag-pink { color: #eb2f96; background: #fff0f6; border-color: #ffadd2; }
+    .tag-gold { color: #d48806; background: #fffbe6; border-color: #ffe58f; }
+    .ant-input { width: 100%; height: 32px; padding: 4px 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; transition: all 0.2s; }
+    .ant-input:focus { border-color: #4096ff; box-shadow: 0 0 0 2px rgba(5,145,255,0.1); outline: none; }
+    .ant-select { position: relative; display: inline-block; width: 100%; }
+    .ant-select-selector { height: 32px; padding: 0 11px; font-size: 14px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; display: flex; align-items: center; cursor: pointer; }
+    .ant-table { background: white; border-radius: 8px; overflow: hidden; }
+    .ant-table table { width: 100%; border-collapse: collapse; text-align: left; }
+    .ant-table th { background: #fafafa; padding: 12px 16px; font-weight: 500; color: rgba(0,0,0,0.88); font-size: 14px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+    .ant-table td { padding: 12px 16px; font-size: 14px; color: rgba(0,0,0,0.88); border-bottom: 1px solid #f0f0f0; }
+    .ant-table tr:hover td { background: #fafafa; }
+    .filter-bar { background: white; border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    .filter-item { display: flex; flex-direction: column; gap: 6px; min-width: 160px; }
+    .filter-item label { font-size: 13px; color: rgba(0,0,0,0.88); }
+    .pagination { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 16px; }
+    .pagination button { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; cursor: pointer; font-size: 14px; }
+    .pagination button.active { border-color: #1677ff; color: #1677ff; }
+    .pagination button:disabled { color: #d9d9d9; cursor: not-allowed; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; }
+    .activity-cover { width: 80px; height: 50px; border-radius: 4px; object-fit: cover; background: #f0f0f0; }
+    .action-links { display: flex; gap: 8px; }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen">
+    <aside class="w-60 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="h-16 flex items-center px-5 border-b border-gray-200">
+        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">城</div>
+        <span class="text-lg font-semibold text-gray-800">一城活动后台</span>
+      </div>
+      <nav class="py-3">
+        <a href="dashboard.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📊</span><span>仪表盘</span></a>
+        <a href="activities.html" class="flex items-center px-5 py-2.5 text-sm bg-blue-50 text-blue-600 border-r-2 border-blue-600"><span class="mr-3">🎫</span><span>活动管理</span></a>
+        <a href="operations.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">🏠</span><span>首页运营</span></a>
+        <a href="orders.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📦</span><span>订单管理</span></a>
+        <a href="users.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">👥</span><span>用户管理</span></a>
+        <a href="participants.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📋</span><span>参与人管理</span></a>
+        <a href="content.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">📝</span><span>内容管理</span></a>
+        <a href="settings.html" class="flex items-center px-5 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><span class="mr-3">⚙️</span><span>系统设置</span></a>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col">
+      <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+        <div class="text-base font-medium text-gray-800">活动管理</div>
+        <div class="flex items-center gap-4"><span class="text-sm text-gray-500">管理员</span><div class="avatar">管</div></div>
+      </header>
+      <main class="flex-1 p-6 overflow-auto">
+        <div class="filter-bar">
+          <div class="filter-item"><label>活动状态</label>
+            <div class="ant-select"><div class="ant-select-selector">全部状态</div></div>
+          </div>
+          <div class="filter-item"><label>活动分类</label>
+            <div class="ant-select"><div class="ant-select-selector">全部分类</div></div>
+          </div>
+          <div class="filter-item" style="min-width: 240px;"><label>搜索关键词</label>
+            <input class="ant-input" placeholder="请输入活动名称/地点" />
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="ant-btn">重置</button>
+            <button class="ant-btn ant-btn-primary">搜索</button>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div class="text-sm text-gray-500">共 7 条记录</div>
+          <a href="activity-create.html" class="ant-btn ant-btn-primary">+ 发布活动</a>
+        </div>
+        <div class="ant-table">
+          <table>
+            <thead><tr>
+              <th>活动封面</th><th>活动名称</th><th>分类</th><th>活动地点</th>
+              <th>场次/票档</th><th>状态</th><th>创建时间</th><th style="width: 200px;">操作</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="activity-cover" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div></td>
+                <td><div class="font-medium">城市音乐节 2026</div><div class="text-xs text-gray-400">夏日狂欢，音乐不止</div></td>
+                <td><span class="ant-tag tag-pink">音乐</span></td>
+                <td>上海·梅赛德斯奔驰文化中心</td>
+                <td>2 场 / 3 档</td>
+                <td><span class="ant-tag tag-green">售卖中</span></td>
+                <td>2026-06-01 10:00</td>
+                <td><div class="action-links">
+                  <a href="activity-detail.html" class="ant-btn ant-btn-link ant-btn-sm">详情</a>
+                  <a href="activity-edit.html" class="ant-btn ant-btn-link ant-btn-sm">编辑</a>
+                  <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #fa8c16;">下架</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="activity-cover" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div></td>
+                <td><div class="font-medium">当代艺术大展：光影之间</div><div class="text-xs text-gray-400">探索艺术的无限可能</div></td>
+                <td><span class="ant-tag tag-cyan">展览</span></td>
+                <td>北京·今日美术馆</td>
+                <td>1 场 / 2 档</td>
+                <td><span class="ant-tag tag-blue">已发布</span></td>
+                <td>2026-06-05 14:30</td>
+                <td><div class="action-links">
+                  <a href="activity-detail.html" class="ant-btn ant-btn-link ant-btn-sm">详情</a>
+                  <a href="activity-edit.html" class="ant-btn ant-btn-link ant-btn-sm">编辑</a>
+                  <button class="ant-btn ant-btn-link ant-btn-sm">发布</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="activity-cover" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div></td>
+                <td><div class="font-medium">亲子互动科学秀</div><div class="text-xs text-gray-400">让孩子爱上科学</div></td>
+                <td><span class="ant-tag tag-orange">亲子</span></td>
+                <td>广州·广东科学中心</td>
+                <td>3 场 / 2 档</td>
+                <td><span class="ant-tag tag-gray">草稿</span></td>
+                <td>2026-06-10 09:00</td>
+                <td><div class="action-links">
+                  <a href="activity-detail.html" class="ant-btn ant-btn-link ant-btn-sm">详情</a>
+                  <a href="activity-edit.html" class="ant-btn ant-btn-link ant-btn-sm">编辑</a>
+                  <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #ff4d4f;">删除</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="activity-cover" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div></td>
+                <td><div class="font-medium">城市读书会 · 文学之夜</div><div class="text-xs text-gray-400">与文学对话，与心灵相遇</div></td>
+                <td><span class="ant-tag tag-purple">讲座</span></td>
+                <td>深圳·南山图书馆</td>
+                <td>1 场 / 1 档</td>
+                <td><span class="ant-tag tag-green">售卖中</span></td>
+                <td>2026-06-12 16:00</td>
+                <td><div class="action-links">
+                  <a href="activity-detail.html" class="ant-btn ant-btn-link ant-btn-sm">详情</a>
+                  <a href="activity-edit.html" class="ant-btn ant-btn-link ant-btn-sm">编辑</a>
+                  <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #fa8c16;">下架</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="activity-cover" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);"></div></td>
+                <td><div class="font-medium">城市马拉松挑战赛</div><div class="text-xs text-gray-400">挑战自我，超越极限</div></td>
+                <td><span class="ant-tag tag-red">赛事</span></td>
+                <td>成都·天府广场</td>
+                <td>1 场 / 4 档</td>
+                <td><span class="ant-tag tag-orange">已售罄</span></td>
+                <td>2026-06-15 11:20</td>
+                <td><div class="action-links">
+                  <a href="activity-detail.html" class="ant-btn ant-btn-link ant-btn-sm">详情</a>
+                  <a href="activity-edit.html" class="ant-btn ant-btn-link ant-btn-sm">编辑</a>
+                  <button class="ant-btn ant-btn-link ant-btn-sm" style="color: #fa8c16;">下架</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="activity-cover" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);"></div></td>
+                <td><div class="font-medium">夏日草坪派对</div><div class="text-xs text-gray-400">阳光、草地、音乐、朋友</div></td>
+                <td><span class="ant-tag tag-gold">聚会</span></td>
+                <td>杭州·西湖草坪</td>
+                <td>2 场 / 2 档</td>
+                <td><span class="ant-tag tag-gray">已结束</span></td>
+                <td>2026-06-18 20:00</td>
+                <td><div class="action-links">
+                  <a href="activity-detail.html" class="ant-btn ant-btn-link ant-btn-sm">详情</a>
+                  <button class="ant-btn ant-btn-link ant-btn-sm">查看数据</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="activity-cover" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);"></div></td>
+                <td><div class="font-medium">盛夏狂欢夜 · 热门精选</div><div class="text-xs text-gray-400">今夏最火爆的夜场派对</div></td>
+                <td><span class="ant-tag tag-red">热门</span></td>
+                <td>南京·奥体中心</td>
+                <td>1 场 / 3 档</td>
+                <td><span class="ant-tag tag-red">已下架</span></td>
+                <td>2026-06-20 08:30</td>
+                <td><div class="action-links">
+                  <a href="activity-detail.html" class="ant-btn ant-btn-link ant-btn-sm">详情</a>
+                  <button class="ant-btn ant-btn-link ant-btn-sm">重新上架</button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <button disabled>«</button><button class="active">1</button><button disabled>»</button>
+          <span class="text-sm text-gray-500">共 7 条</span>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

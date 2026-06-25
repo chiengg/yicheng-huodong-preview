@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仪表盘 - 一城活动后台</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f5f5f5;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 240px; background: white; border-right: 1px solid #e5e7eb; flex-shrink: 0; }
+    .sidebar-logo { height: 64px; display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid #e5e7eb; }
+    .sidebar-logo-icon { width: 32px; height: 32px; background: #1677ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; margin-right: 12px; }
+    .sidebar-logo-text { font-size: 18px; font-weight: 600; color: #1f2937; }
+    .sidebar-nav { padding: 12px 0; }
+    .nav-item { display: flex; align-items: center; padding: 10px 20px; font-size: 14px; color: #374151; cursor: pointer; text-decoration: none; transition: all 0.2s; border-right: 2px solid transparent; }
+    .nav-item:hover { background: #eff6ff; color: #2563eb; }
+    .nav-item.active { background: #eff6ff; color: #2563eb; border-right-color: #2563eb; }
+    .nav-item-icon { margin-right: 12px; font-size: 16px; }
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .header { height: 64px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; flex-shrink: 0; }
+    .header-title { font-size: 16px; font-weight: 500; color: #1f2937; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .header-admin { font-size: 14px; color: #6b7280; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; }
+    .content { flex: 1; padding: 24px; overflow: auto; }
+    .stat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: white; border-radius: 8px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .stat-info { flex: 1; }
+    .stat-label { font-size: 14px; color: #6b7280; margin-bottom: 8px; }
+    .stat-value { font-size: 30px; font-weight: 600; color: #1f2937; line-height: 1.2; margin-bottom: 4px; }
+    .stat-trend { font-size: 13px; display: flex; align-items: center; gap: 4px; }
+    .stat-trend.up { color: #ef4444; }
+    .stat-trend.down { color: #22c55e; }
+    .stat-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; margin-left: 12px; }
+    .card { background: white; border-radius: 8px; border: 1px solid #f0f0f0; margin-bottom: 24px; }
+    .card-head { padding: 0 24px; min-height: 56px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+    .card-head-title { font-size: 16px; font-weight: 600; color: #1f2937; }
+    .card-body { padding: 24px; }
+    .ant-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 15px; font-size: 14px; border-radius: 6px; cursor: pointer; border: 1px solid #d9d9d9; background: white; color: rgba(0,0,0,0.88); transition: all 0.2s; text-decoration: none; }
+    .ant-btn:hover { border-color: #4096ff; color: #4096ff; }
+    .ant-btn-primary { background: #1677ff; border-color: #1677ff; color: white; }
+    .ant-btn-primary:hover { background: #4096ff; border-color: #4096ff; color: white; }
+    .ant-tag { display: inline-block; padding: 0 7px; font-size: 12px; line-height: 20px; border-radius: 4px; border: 1px solid; }
+    .tag-blue { color: #1677ff; background: #e6f4ff; border-color: #91caff; }
+    .tag-green { color: #52c41a; background: #f6ffed; border-color: #b7eb8f; }
+    .tag-orange { color: #fa8c16; background: #fff7e6; border-color: #ffd591; }
+    .tag-red { color: #ff4d4f; background: #fff1f0; border-color: #ffa39e; }
+    .tag-purple { color: #722ed1; background: #f9f0ff; border-color: #d3adf7; }
+    .tag-cyan { color: #13c2c2; background: #e6fffb; border-color: #87e8de; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">城</div>
+        <span class="sidebar-logo-text">一城活动后台</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item active"><span class="nav-item-icon">📊</span><span>仪表盘</span></a>
+        <a href="activities.html" class="nav-item"><span class="nav-item-icon">🎫</span><span>活动管理</span></a>
+        <a href="operations.html" class="nav-item"><span class="nav-item-icon">🏠</span><span>首页运营</span></a>
+        <a href="orders.html" class="nav-item"><span class="nav-item-icon">📦</span><span>订单管理</span></a>
+        <a href="users.html" class="nav-item"><span class="nav-item-icon">👥</span><span>用户管理</span></a>
+        <a href="participants.html" class="nav-item"><span class="nav-item-icon">📋</span><span>参与人管理</span></a>
+        <a href="content.html" class="nav-item"><span class="nav-item-icon">📝</span><span>内容管理</span></a>
+        <a href="settings.html" class="nav-item"><span class="nav-item-icon">⚙️</span><span>系统设置</span></a>
+      </nav>
+    </aside>
+    <div class="main">
+      <header class="header">
+        <div class="header-title">用户概况</div>
+        <div class="header-right">
+          <span class="header-admin">管理员</span>
+          <div class="avatar">管</div>
+        </div>
+      </header>
+      <main class="content">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">累计用户</div>
+              <div class="stat-value">3,455</div>
+              <div class="stat-trend up">环比增长 ↑ 28.87%</div>
+            </div>
+            <div class="stat-icon" style="background: #f9f0ff; color: #722ed1;">👤</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">访客数</div>
+              <div class="stat-value">911</div>
+              <div class="stat-trend down">环比增长 ↓ 5.39%</div>
+            </div>
+            <div class="stat-icon" style="background: #e6f4ff; color: #1677ff;">👁️</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">浏览量</div>
+              <div class="stat-value">6,862</div>
+              <div class="stat-trend down">环比增长 ↓ 5.20%</div>
+            </div>
+            <div class="stat-icon" style="background: #f6ffed; color: #52c41a;">👁️</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">新增用户数</div>
+              <div class="stat-value">775</div>
+              <div class="stat-trend down">环比增长 ↓ 10.87%</div>
+            </div>
+            <div class="stat-icon" style="background: #fff7e6; color: #fa8c16;">👤</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">成交用户数</div>
+              <div class="stat-value">108</div>
+              <div class="stat-trend up">环比增长 ↑ 9.09%</div>
+            </div>
+            <div class="stat-icon" style="background: #f9f0ff; color: #9254de;">🛒</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">付费会员数</div>
+              <div class="stat-value">28</div>
+              <div class="stat-trend down">环比增长 ↓ 12.50%</div>
+            </div>
+            <div class="stat-icon" style="background: #fff0f6; color: #eb2f96;">👑</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title">用户趋势</span>
+          </div>
+          <div class="card-body">
+            <div id="trendChart" style="width: 100%; height: 400px;"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var dates = [];
+      var start = new Date('2026-05-26');
+      for (var i = 0; i < 32; i++) {
+        var d = new Date(start);
+        d.setDate(d.getDate() + i);
+        dates.push((d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' + d.getDate() : d.getDate()));
+      }
+      var newUsers = [20,18,25,22,30,28,24,32,28,35,30,25,20,15,22,28,35,40,38,35,30,25,20,18,25,30,35,42,45,40,35,28];
+      var visitors = [250,230,280,260,320,300,270,350,320,380,350,300,250,200,280,340,420,480,450,420,380,320,280,250,300,360,420,500,550,520,450,380];
+      var pageViews = [500,480,550,520,620,600,560,680,640,720,680,600,520,450,550,650,780,880,850,800,720,640,580,520,600,720,820,950,1050,980,880,750];
+      var dealUsers = [5,4,6,5,7,6,5,7,6,8,7,6,5,4,5,6,8,10,9,8,7,6,5,4,5,7,8,10,12,11,10,8];
+      var newPaid = [2,1,3,2,2,3,2,3,2,4,3,2,1,1,2,3,3,4,3,3,2,2,1,1,2,3,4,5,5,4,3,2];
+      var chartDom = document.getElementById('trendChart');
+      if (chartDom && typeof echarts !== 'undefined') {
+        var chart = echarts.init(chartDom);
+        chart.setOption({
+          tooltip: { trigger: 'axis' },
+          legend: { data: ['新增用户数', '访客数', '浏览量', '成交用户数', '新增付费用户数'], bottom: 0 },
+          grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
+          xAxis: { type: 'category', data: dates, boundaryGap: false },
+          yAxis: { type: 'value' },
+          series: [
+            { name: '新增用户数', type: 'line', data: newUsers, smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { width: 2 }, itemStyle: { color: '#1677ff' } },
+            { name: '访客数', type: 'line', data: visitors, smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { width: 2 }, itemStyle: { color: '#fa8c16' } },
+            { name: '浏览量', type: 'line', data: pageViews, smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { width: 2 }, itemStyle: { color: '#52c41a' } },
+            { name: '成交用户数', type: 'line', data: dealUsers, smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { width: 2 }, itemStyle: { color: '#8c8c8c' } },
+            { name: '新增付费用户数', type: 'line', data: newPaid, smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { width: 2 }, itemStyle: { color: '#ff4d4f' } }
+          ]
+        });
+        window.addEventListener('resize', function() { chart.resize(); });
+      }
+    });
+  </script>
+</body>
+</html>
